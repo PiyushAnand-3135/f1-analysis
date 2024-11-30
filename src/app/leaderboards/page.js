@@ -1,4 +1,22 @@
+'use client';
+import { useState } from "react";
+import DriverStandings from "../components/DriverStandings";
+
 export default function Leaderboard() {
+    
+  const [sessionType, setSessionType] = useState("qualifying");
+  const [grandPrix, setGrandPrix] = useState("Monaco Grand Prix");
+  const [year, setYear] = useState("2024");
+
+ 
+  const [search, setSearch] = useState(false);
+
+  
+  const handleSearch = () => {
+    setSearch(false);
+    setTimeout(() => setSearch(true), 0); // Triggers re-render
+  };
+
   return (
     <>
       <div className="flex flex-col">
@@ -20,10 +38,44 @@ export default function Leaderboard() {
             <select
               name="session"
               id="session"
+              value={sessionType}
+              onChange={(e) => setSessionType(e.target.value)}
               className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600"
             >
               <option value="qualifying">Qualifying</option>
-              <option value="standard">Standard</option>
+              <option value="race">Race</option>
+            </select>
+          </div>
+
+          {/* Grand Prix Dropdown */}
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="grandPrix"
+              className="text-lg font-medium text-gray-700 dark:text-gray-300"
+            >
+              Choose grand prix:
+            </label>
+            <select
+              name="grandPrix"
+              id="grandPrix"
+              value={grandPrix}
+              onChange={(e) => setGrandPrix(e.target.value)}
+              className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600"
+            >
+              <option value="bahrain">Bahrain Grand Prix</option>
+              <option value="catalunya">Spain Grand Prix</option>
+              <option value="hungaroring">Hungary Grand Prix</option>
+              <option value="imola">Imola Grand Prix</option>
+              <option value="istanbul">Istanbul Grand Prix</option>
+              <option value="monza">Monza Grand Prix</option>
+              <option value="mugello">Mugello Grand Prix</option>
+              <option value="nurburgring">Germany Grand Prix</option>
+              <option value="portimao">Portugal Grand Prix</option>
+              <option value="red_bull_ring">Austria Grand Prix</option>
+              <option value="silverstone">Silverstone Grand Prix</option>
+              <option value="sochi">Sochi Grand Prix</option>
+              <option value="spa">Spa Grand Prix</option>
+              <option value="yas_marina">Abu Dhabi Grand Prix</option>
             </select>
           </div>
 
@@ -39,45 +91,33 @@ export default function Leaderboard() {
               type="number"
               id="year"
               name="year"
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
               min="1900"
               max="2100"
-              placeholder="2024"
+              placeholder="2020"
               className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600"
             />
           </div>
-
-          {/* Additional Session Dropdown */}
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="additional-session"
-              className="text-lg font-medium text-gray-700 dark:text-gray-300"
-            >
-              Choose an additional session type:
-            </label>
-            <select
-              name="additional-session"
-              id="additional-session"
-              className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600"
-            >
-              <option value="practice">Practice</option>
-              <option value="race">Race</option>
-            </select>
-          </div>
         </div>
-        <button className="mt-5 px-3 py-2 w-32 mx-auto bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">Search</button>
+
+        {/* Search Button */}
+        <button
+          onClick={handleSearch}
+          className="mt-5 px-3 py-2 w-32 mx-auto bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+        >
+          Search
+        </button>
       </div>
 
-      <div>
-        <table>
-            <tr>
-                <th>Pos</th>
-                <th>Driver</th>
-                <th>Constructor</th>
-                <th>Points</th>
-                <th>Wins</th>
-            </tr>
-        </table>
-      </div>
+      {/* Pass Props to DriverStandings */}
+      {search && (
+        <DriverStandings
+          sessionType={sessionType}
+          grandPrix={grandPrix}
+          year={year}
+        />
+      )}
     </>
   );
 }
